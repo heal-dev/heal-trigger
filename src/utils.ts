@@ -1,20 +1,21 @@
 /**
- * Builds a greeting message for the given name.
- * @param name - The name to greet.
- * @returns The greeting message.
+ * Converts a glob-style pattern to a POSIX regex string compatible with
+ * PostgreSQL's case-insensitive regex match operator (`~*`).
+ *
+ * - Bare values (no `*`) are treated as exact matches and wrapped in `^...$`.
+ * - `*` wildcards are converted to `.*`.
+ * - All other regex special characters are escaped.
+ *
+ * @example
+ * globToRegex("finance")   // "^finance$"
+ * globToRegex("*nance")    // ".*nance"
+ * globToRegex("*login*")   // ".*login.*"
  */
-export function buildGreeting(name: string): string {
-  if (!name || name.trim() === '') {
-    return 'Hello, World!';
+export function globToRegex(glob: string): string {
+  if (!glob) throw new Error(`Invalid glob pattern: "${glob}"`);
+  const escaped = glob.replace(/[.+^${}()|[\]\\]/g, '\\$&');
+  if (escaped.includes('*')) {
+    return escaped.replace(/\*/g, '.*');
   }
-  return `Hello, ${name.trim()}!`;
-}
-
-/**
- * Formats a timestamp as an ISO 8601 string.
- * @param date - The date to format. Defaults to now.
- * @returns The formatted timestamp.
- */
-export function formatTimestamp(date: Date = new Date()): string {
-  return date.toISOString();
+  return `^${escaped}$`;
 }

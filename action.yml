@@ -1,5 +1,5 @@
-name: heal-trigger
-description: Trigger heal workflows and report results back to GitHub
+name: Heal.dev CI
+description: Trigger a Heal test execution and report results back to GitHub
 author: heal-dev
 
 branding:
@@ -7,18 +7,26 @@ branding:
   color: purple
 
 inputs:
-  who-to-greet:
-    description: The name of the person or entity to greet
+  api-token:
+    description: Your Heal API token
+    required: true
+  team:
+    description: Filter by team slug. Supports glob patterns (e.g. "*nance", "finance").
     required: false
-    default: World
-  github-token:
-    description: GitHub token for authenticated API calls
+  feature:
+    description: Filter by feature slug. Supports glob patterns (e.g. "decision-analysis", "*analysis*").
     required: false
-    default: ${{ github.token }}
+  test-case:
+    description: Filter by test case slug. Supports glob patterns (e.g. "*login*").
+    required: false
+  backend-url:
+    description: Override the Heal backend base URL.
+    required: false
+    default: https://backend.heal.dev
 
 outputs:
-  greeting:
-    description: The greeting message that was generated
+  url:
+    description: URL of the triggered execution
 
 runs:
   using: node24

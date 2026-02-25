@@ -1,29 +1,37 @@
 import * as core from '@actions/core';
-import * as github from '@actions/github';
-import { buildGreeting } from './utils';
+import type { ExternalExecutionTriggeredResponse, TriggerExecutionRequest } from './types';
+import { globToRegex } from './utils';
 
-/**
- * Main entry point for the action.
- * @returns {Promise<void>}
- */
 async function run(): Promise<void> {
   try {
-    const whoToGreet: string = core.getInput('who-to-greet');
-    const token: string = core.getInput('github-token');
+    const apiToken = core.getInput('api-token', { required: true });
+    const backendUrl = core.getInput('backend-url') || 'https://backend.heal.dev';
+    const team = core.getInput('team');
+    const feature = core.getInput('feature');
+    const testCase = core.getInput('test-case');
 
-    core.debug(`Input who-to-greet: ${whoToGreet}`);
+    const body: TriggerExecutionRequest = {};
+    if (team) body.teamSlugRegex = globToRegex(team);
+    if (feature) body.featureSlugRegex = globToRegex(feature);
+    if (testCase) body.testCaseSlugRegex = globToRegex(testCase);
 
-    const greeting: string = buildGreeting(whoToGreet);
-    core.info(greeting);
+    const response = await fetch(`${backendUrl}/api/v1/executions/trigger`, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${apiToken}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(body),
+    });
 
-    if (token) {
-      const octokit = github.getOctokit(token);
-      const { context } = github;
-      core.debug(`Running in repo: ${context.repo.owner}/${context.repo.repo}`);
-      core.debug(`Octokit client created: ${typeof octokit}`);
+    if (!response.ok) {
+      const text = await response.text();
+      throw new Error(`Heal API error ${response.status}: ${text}`);
     }
 
-    core.setOutput('greeting', greeting);
+    const data = (await response.json()) as ExternalExecutionTriggeredResponse;
+    core.info(`Execution triggered: ${data.healExecutionUrl}`);
+    core.setOutput('url', data.healExecutionUrl);
   } catch (error) {
     core.setFailed(error instanceof Error ? error.message : String(error));
   }

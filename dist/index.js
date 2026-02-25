@@ -25701,7 +25701,7 @@ async function run() {
         const response = await fetch(`${backendUrl}/api/v1/executions/trigger`, {
             method: 'POST',
             headers: {
-                Authorization: `Bearer ${apiToken}`,
+                Authorization: `ApiKey ${apiToken}`,
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify(body),

@@ -1,0 +1,25 @@
+name: heal-trigger
+description: Trigger heal workflows and report results back to GitHub
+author: heal-dev
+
+branding:
+  icon: zap
+  color: purple
+
+inputs:
+  who-to-greet:
+    description: The name of the person or entity to greet
+    required: false
+    default: World
+  github-token:
+    description: GitHub token for authenticated API calls
+    required: false
+    default: ${{ github.token }}
+
+outputs:
+  greeting:
+    description: The greeting message that was generated
+
+runs:
+  using: node20
+  main: dist/index.js

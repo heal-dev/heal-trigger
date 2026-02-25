@@ -1,0 +1,33 @@
+name: Heal.dev CI
+description: Trigger a Heal test execution and report results back to GitHub
+author: heal-dev
+
+branding:
+  icon: zap
+  color: purple
+
+inputs:
+  api-token:
+    description: Your Heal API token
+    required: true
+  team:
+    description: Filter by team slug. Supports glob patterns (e.g. "*nance", "finance").
+    required: false
+  feature:
+    description: Filter by feature slug. Supports glob patterns (e.g. "decision-analysis", "*analysis*").
+    required: false
+  test-case:
+    description: Filter by test case slug. Supports glob patterns (e.g. "*login*").
+    required: false
+  backend-url:
+    description: Override the Heal backend base URL.
+    required: false
+    default: https://backend.heal.dev
+
+outputs:
+  url:
+    description: URL of the triggered execution
+
+runs:
+  using: node24
+  main: dist/index.js

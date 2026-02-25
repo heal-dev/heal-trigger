@@ -5,35 +5,35 @@ vi.mock("@actions/github");
 
 describe("buildGreeting", () => {
   it("greets the given name", async () => {
-    const { buildGreeting } = await import("../src/utils.js");
+    const { buildGreeting } = await import("../src/utils");
     expect(buildGreeting("Alice")).toBe("Hello, Alice!");
   });
 
   it("trims whitespace from the name", async () => {
-    const { buildGreeting } = await import("../src/utils.js");
+    const { buildGreeting } = await import("../src/utils");
     expect(buildGreeting("  Bob  ")).toBe("Hello, Bob!");
   });
 
   it("falls back to World when name is empty", async () => {
-    const { buildGreeting } = await import("../src/utils.js");
+    const { buildGreeting } = await import("../src/utils");
     expect(buildGreeting("")).toBe("Hello, World!");
   });
 
   it("falls back to World when name is whitespace", async () => {
-    const { buildGreeting } = await import("../src/utils.js");
+    const { buildGreeting } = await import("../src/utils");
     expect(buildGreeting("   ")).toBe("Hello, World!");
   });
 });
 
 describe("formatTimestamp", () => {
   it("returns an ISO 8601 string for a given date", async () => {
-    const { formatTimestamp } = await import("../src/utils.js");
+    const { formatTimestamp } = await import("../src/utils");
     const date = new Date("2024-01-15T12:00:00.000Z");
     expect(formatTimestamp(date)).toBe("2024-01-15T12:00:00.000Z");
   });
 
   it("defaults to the current time", async () => {
-    const { formatTimestamp } = await import("../src/utils.js");
+    const { formatTimestamp } = await import("../src/utils");
     const before = Date.now();
     const result = formatTimestamp();
     const after = Date.now();
@@ -50,32 +50,24 @@ describe("run", () => {
 
   it("sets the greeting output", async () => {
     const core = await import("@actions/core");
-    core.getInput = vi.fn((name) => {
+    vi.mocked(core.getInput).mockImplementation((name: string) => {
       if (name === "who-to-greet") return "Tester";
       if (name === "github-token") return "";
       return "";
     });
-    core.setOutput = vi.fn();
-    core.info = vi.fn();
-    core.debug = vi.fn();
-    core.setFailed = vi.fn();
 
-    await import("../src/index.js");
+    await import("../src/index");
 
     expect(core.setOutput).toHaveBeenCalledWith("greeting", "Hello, Tester!");
   });
 
   it("calls setFailed on error", async () => {
     const core = await import("@actions/core");
-    core.getInput = vi.fn(() => {
+    vi.mocked(core.getInput).mockImplementation(() => {
       throw new Error("input error");
     });
-    core.setFailed = vi.fn();
-    core.info = vi.fn();
-    core.debug = vi.fn();
-    core.setOutput = vi.fn();
 
-    await import("../src/index.js");
+    await import("../src/index");
 
     expect(core.setFailed).toHaveBeenCalledWith("input error");
   });

@@ -1,6 +1,6 @@
-import * as core from "@actions/core";
-import * as github from "@actions/github";
-import { buildGreeting } from "./utils";
+import * as core from '@actions/core';
+import * as github from '@actions/github';
+import { buildGreeting } from './utils';
 
 /**
  * Main entry point for the action.
@@ -8,8 +8,8 @@ import { buildGreeting } from "./utils";
  */
 async function run(): Promise<void> {
   try {
-    const whoToGreet: string = core.getInput("who-to-greet");
-    const token: string = core.getInput("github-token");
+    const whoToGreet: string = core.getInput('who-to-greet');
+    const token: string = core.getInput('github-token');
 
     core.debug(`Input who-to-greet: ${whoToGreet}`);
 
@@ -23,7 +23,7 @@ async function run(): Promise<void> {
       core.debug(`Octokit client created: ${typeof octokit}`);
     }
 
-    core.setOutput("greeting", greeting);
+    core.setOutput('greeting', greeting);
   } catch (error) {
     core.setFailed(error instanceof Error ? error.message : String(error));
   }

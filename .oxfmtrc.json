@@ -1,7 +1,6 @@
 {
-  "indentWidth": 2,
-  "lineEnding": "lf",
-  "singleQuotes": false,
-  "trailingComma": "all",
-  "semicolons": true
+  "$schema": "./node_modules/oxfmt/configuration_schema.json",
+  "printWidth": 120,
+  "singleQuote": true,
+  "ignorePatterns": ["dist", "node_modules"]
 }

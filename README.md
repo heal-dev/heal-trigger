@@ -11,7 +11,7 @@ A GitHub Action to trigger heal workflows and report results back to GitHub.
 - name: Run heal-trigger
   uses: heal-dev/heal-trigger@v1
   with:
-    who-to-greet: "Your Name"
+    who-to-greet: 'Your Name'
     github-token: ${{ secrets.GITHUB_TOKEN }}
 ```
 
@@ -35,7 +35,7 @@ jobs:
         id: trigger
         uses: heal-dev/heal-trigger@v1
         with:
-          who-to-greet: "World"
+          who-to-greet: 'World'
           github-token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Print greeting
@@ -44,22 +44,22 @@ jobs:
 
 ## Inputs
 
-| Input | Description | Required | Default |
-|-------|-------------|----------|---------|
-| `who-to-greet` | The name of the person or entity to greet | No | `World` |
-| `github-token` | GitHub token for authenticated API calls | No | `${{ github.token }}` |
+| Input          | Description                               | Required | Default               |
+| -------------- | ----------------------------------------- | -------- | --------------------- |
+| `who-to-greet` | The name of the person or entity to greet | No       | `World`               |
+| `github-token` | GitHub token for authenticated API calls  | No       | `${{ github.token }}` |
 
 ## Outputs
 
-| Output | Description |
-|--------|-------------|
+| Output     | Description                             |
+| ---------- | --------------------------------------- |
 | `greeting` | The greeting message that was generated |
 
 ## Development
 
 ### Prerequisites
 
-- Node.js 20+
+- Node.js 24+
 - npm
 
 ### Setup
@@ -70,15 +70,19 @@ cd heal-trigger
 npm install
 ```
 
+[Lefthook](https://github.com/evilmartians/lefthook) pre-commit hooks are installed automatically and run lint, format check, typecheck, tests, and a dist freshness check before every commit.
+
 ### Scripts
 
-| Script | Description |
-|--------|-------------|
-| `npm test` | Run unit tests with Vitest |
-| `npm run lint` | Lint source files with OxLint |
-| `npm run format` | Format source files with OxFmt |
-| `npm run format:check` | Check formatting without writing |
-| `npm run build` | Bundle `src/index.js` into `dist/index.js` using ncc |
+| Script                 | Description                                          |
+| ---------------------- | ---------------------------------------------------- |
+| `npm test`             | Run unit tests with Vitest                           |
+| `npm run lint`         | Lint source files with OxLint                        |
+| `npm run lint:fix`     | Lint and auto-fix source files                       |
+| `npm run format`       | Format source files with OxFmt                       |
+| `npm run format:check` | Check formatting without writing                     |
+| `npm run typecheck`    | Type-check with TypeScript (no emit)                 |
+| `npm run build`        | Bundle `src/index.ts` into `dist/index.js` using ncc |
 
 ### Build
 
@@ -87,6 +91,8 @@ The action is bundled with [@vercel/ncc](https://github.com/vercel/ncc) so no `n
 ```bash
 npm run build
 ```
+
+The pre-commit hook will catch a stale `dist/` and block the commit until you rebuild and stage the output.
 
 ### Testing
 
@@ -100,8 +106,10 @@ Tests use [Vitest](https://vitest.dev/) and live in `__tests__/`.
 
 ```bash
 npm run lint          # OxLint
+npm run lint:fix      # OxLint (auto-fix)
 npm run format        # OxFmt (writes changes)
 npm run format:check  # OxFmt (read-only check)
+npm run typecheck     # TypeScript type check
 ```
 
 ## Releasing
@@ -114,6 +122,7 @@ git push origin v1.0.0
 ```
 
 The release workflow will:
+
 1. Build `dist/index.js`
 2. Create a GitHub Release with auto-generated notes
 3. Update the floating major version tag (e.g. `v1`)

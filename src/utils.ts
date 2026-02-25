@@ -4,8 +4,8 @@
  * @returns The greeting message.
  */
 export function buildGreeting(name: string): string {
-  if (!name || name.trim() === "") {
-    return "Hello, World!";
+  if (!name || name.trim() === '') {
+    return 'Hello, World!';
   }
   return `Hello, ${name.trim()}!`;
 }

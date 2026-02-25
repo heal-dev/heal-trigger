@@ -2,31 +2,35 @@
   "name": "heal-trigger",
   "version": "1.0.0",
   "description": "A GitHub Action to trigger heal workflows",
-  "main": "src/index.ts",
-  "scripts": {
-    "build": "ncc build src/index.ts -o dist --source-map --license licenses.txt",
-    "test": "vitest run",
-    "lint": "oxlint src __tests__",
-    "format": "oxfmt src __tests__",
-    "format:check": "oxfmt --check src __tests__"
-  },
   "keywords": [
     "github-action",
     "heal",
     "trigger"
   ],
-  "author": "heal-dev",
   "license": "MIT",
+  "author": "heal-dev",
+  "main": "src/index.ts",
+  "scripts": {
+    "build": "ncc build src/index.ts",
+    "test": "vitest run",
+    "lint": "oxlint",
+    "lint:fix": "oxlint --fix",
+    "format": "oxfmt",
+    "format:check": "oxfmt --check",
+    "typecheck": "tsgo --noEmit"
+  },
   "dependencies": {
     "@actions/core": "^1.10.1",
     "@actions/github": "^6.0.0"
   },
   "devDependencies": {
     "@types/node": "^25.3.0",
+    "@typescript/native-preview": "^7.0.0-dev.20260225.1",
     "@vercel/ncc": "^0.38.1",
+    "lefthook": "^1.11.13",
     "oxfmt": "^0.35.0",
     "oxlint": "^1.50.0",
     "typescript": "^5.9.3",
-    "vitest": "^1.6.0"
+    "vitest": "^4.0.18"
   }
 }

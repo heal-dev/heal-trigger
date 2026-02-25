@@ -1,4 +1,4 @@
-require('./sourcemap-register.js');/******/ (() => { // webpackBootstrap
+/******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
 /***/ 4914:
@@ -29970,8 +29970,8 @@ const utils_1 = __nccwpck_require__(1798);
  */
 async function run() {
     try {
-        const whoToGreet = core.getInput("who-to-greet");
-        const token = core.getInput("github-token");
+        const whoToGreet = core.getInput('who-to-greet');
+        const token = core.getInput('github-token');
         core.debug(`Input who-to-greet: ${whoToGreet}`);
         const greeting = (0, utils_1.buildGreeting)(whoToGreet);
         core.info(greeting);
@@ -29981,7 +29981,7 @@ async function run() {
             core.debug(`Running in repo: ${context.repo.owner}/${context.repo.repo}`);
             core.debug(`Octokit client created: ${typeof octokit}`);
         }
-        core.setOutput("greeting", greeting);
+        core.setOutput('greeting', greeting);
     }
     catch (error) {
         core.setFailed(error instanceof Error ? error.message : String(error));
@@ -30006,8 +30006,8 @@ exports.formatTimestamp = formatTimestamp;
  * @returns The greeting message.
  */
 function buildGreeting(name) {
-    if (!name || name.trim() === "") {
-        return "Hello, World!";
+    if (!name || name.trim() === '') {
+        return 'Hello, World!';
     }
     return `Hello, ${name.trim()}!`;
 }
@@ -31943,4 +31943,3 @@ module.exports = parseParams
 /******/ 	
 /******/ })()
 ;
-//# sourceMappingURL=index.js.map

@@ -65,7 +65,7 @@ describe('run', () => {
       'https://backend.heal.dev/api/v1/executions/trigger',
       expect.objectContaining({
         method: 'POST',
-        headers: expect.objectContaining({ Authorization: 'Bearer test-token' }),
+        headers: expect.objectContaining({ Authorization: 'ApiKey test-token' }),
         body: JSON.stringify({}),
       }),
     );
